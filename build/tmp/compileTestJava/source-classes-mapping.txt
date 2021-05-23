@@ -1,0 +1,8 @@
+com/mcxiv/app/EventTest.java
+ com.mcxiv.app.EventTest
+com/mcxiv/app/JarexSettingsTest.java
+ com.mcxiv.app.JarexSettingsTest
+ com.mcxiv.app.JarexSettingsTest$Pack
+com/mcxiv/app/JarexHUDTest.java
+ com.mcxiv.app.JarexHUDTest
+ com.mcxiv.app.JarexHUDTest$Pack

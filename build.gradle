@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+}
+
+group 'com.mcxiv.app'
+version '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //HyperLap2D Runtime and Common API
+    implementation "games.rednblack.hyperlap2d:runtime-libgdx:$h2dVersion"
+    implementation "games.rednblack.hyperlap2d:common-api:$h2dVersion"
+
+    //Mandatory
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    implementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
+    implementation 'net.mountainblade:modular:1.0'
+
+    implementation "com.kotcrab.vis:vis-ui:$visuiVersion"
+
+
+    testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    testImplementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+//    testImplementation "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
+//    testImplementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    testImplementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+//    testImplementation "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+//    testImplementation "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'JarexPlugin',
+                'Implementation-Version': version,
+                'Main-Class': 'com.mcxiv.app.JarexPlugin'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+
+test {
+    useJUnitPlatform()
+}
