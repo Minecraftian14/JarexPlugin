@@ -1,27 +1,41 @@
 package com.mcxiv.app.views.settings;
 
-import com.mcxiv.app.GdxApp;
-import com.mcxiv.app.PureMVCUtil;
+import com.mcxiv.app.JarexPlugin;
+import com.mcxiv.app.PluginTester;
 import com.mcxiv.app.ui.RowElement;
+import com.mcxiv.app.valueobjects.JarexSettingsData;
+import com.mcxiv.app.valueobjects.LinkData;
+import games.rednblack.h2d.common.vo.EditorConfigVO;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 class MediatorJarexSettingsTest {
 
     public static void main(String[] args) throws InterruptedException {
-
-        GdxApp.test(MediatorJarexSettingsTest::Test);
-
+        PluginTester.getAPI().setEditorConfigVO(new EditorConfigVO() {{
+            new JarexSettingsData() {{
+                registeredLinks.add(
+                        new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true),
+                        new LinkData("https://api.github.com/repos/raelus/skin-composer/releases/latest", true)
+                );
+            }}.toStorage(this.pluginStorage.computeIfAbsent(JarexPlugin.CLASS_NAME, k -> new HashMap<>()));
+        }});
+        PluginTester.launchTest(null, MediatorJarexSettingsTest::Test);
     }
 
     private static void Test() {
-        MediatorJarexSettings mediator = new MediatorJarexSettings(PureMVCUtil.plugin);
 
-        PureMVCUtil.facade.registerMediator(mediator);
-        PureMVCUtil.facade.sendNotification(EventSettings.ADD_SETTINGS_MENU_ACTION.getName());
+        JarexPlugin plugin = new JarexPlugin();
+
+        plugin.debugMode(true);
+
+        PluginTester.setPlugin(plugin);
+
+        MediatorJarexSettings mediator = plugin.facade.retrieveMediator(MediatorJarexSettings.CLASS_NAME);
+
         mediator.getViewComponent().translateSettingsToView();
-
-        GdxApp.instance.setTable(mediator.getViewComponent().getContentTable());
+        PluginTester.setTable(mediator.getViewComponent().getContentTable());
 
         Arrays.stream(
                 mediator
@@ -30,7 +44,7 @@ class MediatorJarexSettingsTest {
                         .getChildren().items
         )
                 .filter(actor -> actor instanceof RowElement)
-                .map(actor -> (RowElement)actor)
+                .map(actor -> (RowElement) actor)
                 .forEach(element -> System.out.println(element.getLink()));
     }
 

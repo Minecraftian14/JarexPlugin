@@ -3,10 +3,11 @@ plugins {
 }
 
 group 'com.mcxiv.app'
-version '0.2'
+version '0.3'
 
 repositories {
     mavenCentral()
+        maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -24,14 +25,7 @@ dependencies {
     implementation "com.kotcrab.vis:vis-ui:$visuiVersion"
 
 
-    testImplementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    testImplementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-//    testImplementation "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
-//    testImplementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-    testImplementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-//    testImplementation "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
-//    testImplementation "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+    testImplementation 'com.github.Minecraftian14:Hyperlap2DPluginTester:v0.2.2'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'

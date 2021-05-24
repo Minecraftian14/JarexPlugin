@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Json;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisDialog;
-import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.util.HttpDownloadUtility;
 import com.mcxiv.app.util.ThreadUtil;
@@ -77,6 +76,10 @@ public class MediatorDownloadDialog extends Mediator<ViewDownloadDialog> {
             Json json = new Json();
             json.setIgnoreUnknownFields(true);
             data.setData(json.fromJson(GithubReleaseData.class, HttpDownloadUtility.downloadToString(link.getLink())));
+
+            System.out.println("flag: "+link.getLink());
+            System.out.println("flag: "+data.getData());
+            if(data.getData()==null)return;
 
             // If:
             // * file doesn't exists at all! ie, application not yet installed
