@@ -1,26 +1,47 @@
+com/mcxiv/app/util/ThreadUtil.java
+ com.mcxiv.app.util.ThreadUtil
 com/mcxiv/app/ui/RowElementEntry.java
  com.mcxiv.app.ui.RowElementEntry
  com.mcxiv.app.ui.RowElementEntry$1
-com/mcxiv/app/JarexSettings.java
- com.mcxiv.app.JarexSettings
-com/mcxiv/app/JarexDownloader.java
- com.mcxiv.app.JarexDownloader
-com/mcxiv/app/JarexHUD.java
- com.mcxiv.app.JarexHUD
- com.mcxiv.app.JarexHUD$1
-com/mcxiv/app/JarexVO.java
- com.mcxiv.app.JarexVO
+com/mcxiv/app/util/CUD.java
+ com.mcxiv.app.util.CUD
+com/mcxiv/app/valueobjects/LinkData.java
+ com.mcxiv.app.valueobjects.LinkData
+com/mcxiv/app/views/jarexhud/ViewJarexHUD.java
+ com.mcxiv.app.views.jarexhud.ViewJarexHUD
+ com.mcxiv.app.views.jarexhud.ViewJarexHUD$1
+com/mcxiv/app/valueobjects/JarexSettingsData.java
+ com.mcxiv.app.valueobjects.JarexSettingsData
+com/mcxiv/app/valueobjects/DownloadData.java
+ com.mcxiv.app.valueobjects.DownloadData
 com/mcxiv/app/util/GithubUtil.java
  com.mcxiv.app.util.GithubUtil
-com/mcxiv/app/Event.java
- com.mcxiv.app.Event
-com/mcxiv/app/ui/RowElement.java
- com.mcxiv.app.ui.RowElement
-com/mcxiv/app/util/HttpDownloadUtility.java
- com.mcxiv.app.util.HttpDownloadUtility
 com/mcxiv/app/JarexPlugin.java
  com.mcxiv.app.JarexPlugin
-com/mcxiv/app/JarexMediator.java
- com.mcxiv.app.JarexMediator
- com.mcxiv.app.JarexMediator$1
- com.mcxiv.app.JarexMediator$Capsule
+com/mcxiv/app/views/settings/EventSettings.java
+ com.mcxiv.app.views.settings.EventSettings
+com/mcxiv/app/views/downloader/ViewDownloadDialog.java
+ com.mcxiv.app.views.downloader.ViewDownloadDialog
+com/mcxiv/app/views/settings/ViewJarexSettings.java
+ com.mcxiv.app.views.settings.ViewJarexSettings
+com/mcxiv/app/views/downloader/MediatorDownloadDialog.java
+ com.mcxiv.app.views.downloader.MediatorDownloadDialog
+ com.mcxiv.app.views.downloader.MediatorDownloadDialog$1
+ com.mcxiv.app.views.downloader.MediatorDownloadDialog$2
+com/mcxiv/app/ui/RowElement.java
+ com.mcxiv.app.ui.RowElement
+com/mcxiv/app/views/jarexhud/EventHUD.java
+ com.mcxiv.app.views.jarexhud.EventHUD
+com/mcxiv/app/views/jarexhud/MediatorJarexHUD.java
+ com.mcxiv.app.views.jarexhud.MediatorJarexHUD
+ com.mcxiv.app.views.jarexhud.MediatorJarexHUD$1
+com/mcxiv/app/ui/IDENTITY.java
+ com.mcxiv.app.ui.IDENTITY
+ com.mcxiv.app.ui.IDENTITY$1
+com/mcxiv/app/views/settings/MediatorJarexSettings.java
+ com.mcxiv.app.views.settings.MediatorJarexSettings
+ com.mcxiv.app.views.settings.MediatorJarexSettings$1
+com/mcxiv/app/util/HttpDownloadUtility.java
+ com.mcxiv.app.util.HttpDownloadUtility
+com/mcxiv/app/views/downloader/EventDownloader.java
+ com.mcxiv.app.views.downloader.EventDownloader

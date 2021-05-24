@@ -10,8 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
+import com.mcxiv.app.util.ThreadUtil;
+import com.mcxiv.app.views.settings.ViewJarexSettings;
 
-class JarexSettingsTest extends ScreenAdapter {
+public class GdxApp extends ScreenAdapter {
+
+    public static GdxApp instance = null;
 
     Stage stage;
     Table root;
@@ -23,11 +27,17 @@ class JarexSettingsTest extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        JarexSettings s = new JarexSettings(null, null);
-        root = s.getContentTable();
+        instance = this;
+    }
+
+    public void setTable(Table table) {
+
+        if (root != null || table == null)
+            return;
+
+        root = table;
         root.setFillParent(true);
         stage.addActor(root);
-
     }
 
     @Override
@@ -63,7 +73,7 @@ class JarexSettingsTest extends ScreenAdapter {
         @Override
         public void create() {
             VisUI.load();
-            setScreen(new JarexSettingsTest());
+            setScreen(new GdxApp());
         }
 
         @Override
@@ -71,6 +81,18 @@ class JarexSettingsTest extends ScreenAdapter {
             super.dispose();
             VisUI.dispose();
         }
+    }
+
+    public static void test(Runnable runnable) throws InterruptedException {
+
+        ThreadUtil.launch(() -> GdxApp.main(new String[0]));
+
+        while (GdxApp.instance==null) {
+            System.out.println("Lapse");
+            Thread.sleep(1000);
+        }
+
+        runnable.run();
     }
 
 }
