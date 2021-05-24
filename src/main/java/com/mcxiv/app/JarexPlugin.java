@@ -1,7 +1,12 @@
 package com.mcxiv.app;
 
+import com.mcxiv.app.valueobjects.JarexSettingsData;
+import com.mcxiv.app.views.downloader.MediatorDownloadDialog;
+import com.mcxiv.app.views.jarexhud.EventHUD;
+import com.mcxiv.app.views.jarexhud.MediatorJarexHUD;
+import com.mcxiv.app.views.settings.EventSettings;
+import com.mcxiv.app.views.settings.MediatorJarexSettings;
 import games.rednblack.h2d.common.MenuAPI;
-import games.rednblack.h2d.common.MsgAPI;
 import games.rednblack.h2d.common.plugins.H2DPluginAdapter;
 import net.mountainblade.modular.annotations.Implementation;
 
@@ -10,27 +15,31 @@ public class JarexPlugin extends H2DPluginAdapter {
 
     public static final String CLASS_NAME = JarexPlugin.class.getName();
 
-    private final JarexMediator mediator;
-    private JarexVO vo = new JarexVO();
-
     public JarexPlugin() {
         super(CLASS_NAME);
-
-        mediator = new JarexMediator(this);
     }
+
+    private final JarexSettingsData settingsData = new JarexSettingsData();
 
     @Override
     public void initPlugin() {
-        facade.registerMediator(mediator);
-        pluginAPI.addMenuItem(MenuAPI.WINDOW_MENU, "Jarex", Event.OPEN_JAREX_HUD_ACTION.name);
-        JarexSettings settings = new JarexSettings(facade, this);
+        facade.registerMediator(new MediatorJarexSettings(this));
+        facade.registerMediator(new MediatorJarexHUD(this, true));
+        facade.registerMediator(new MediatorDownloadDialog(this, true));
 
-        vo.fromStorage(getStorage());
-        settings.setSettings(vo);
-        facade.sendNotification(MsgAPI.ADD_PLUGIN_SETTINGS, settings);
+        pluginAPI.addMenuItem(MenuAPI.WINDOW_MENU, "~ Jarex ~", EventHUD.OPEN_JAREX_HUD_ACTION.getName());
+
+        facade.sendNotification(EventSettings.ADD_SETTINGS_MENU_ACTION.getName());
     }
 
-    public JarexVO getSettingsVO() {
-        return vo;
+    public JarexSettingsData getSettingsData() {
+        return settingsData;
     }
+
+    public JarexSettingsData updateAndGetSettingsData() {
+        settingsData.fromStorage(getStorage());
+        return settingsData;
+    }
+
+
 }

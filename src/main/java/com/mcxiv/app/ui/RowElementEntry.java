@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 public class RowElementEntry extends RowElement {
 
     public RowElementEntry(Consumer<RowElement> addNewElementAction) {
-        super("Enter New URL", true);
+        super(0,"Enter New URL", true);
 
         lbl_index.setText(">");
         lbl_versionInstalled.setText("");
@@ -20,12 +20,10 @@ public class RowElementEntry extends RowElement {
             }
         });
 
-        counter--;
-
     }
 
     private RowElement prepare() {
-        return new RowElement(fie_gitLink.getText(), cbx_autoUpdate.isChecked());
+        return new RowElement(getLink(), isAlwaysCheckUpdate());
     }
 
 }

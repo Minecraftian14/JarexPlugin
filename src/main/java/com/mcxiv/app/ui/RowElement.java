@@ -2,6 +2,10 @@ package com.mcxiv.app.ui;
 
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.kotcrab.vis.ui.widget.*;
+import com.mcxiv.app.util.GithubUtil;
+import com.mcxiv.app.valueobjects.LinkData;
+
+import java.util.Objects;
 
 public class RowElement extends VisTable {
 
@@ -9,10 +13,6 @@ public class RowElement extends VisTable {
      * A delimiter to separate github links and auto update setting
      */
     public static final String DELIMITER = "==";
-
-    protected static int counter = 0;
-
-    protected final int index;
 
     // index | link | version installed [red:new update available|grn:latest] | auto update | log
     protected final VisLabel lbl_index;
@@ -22,10 +22,13 @@ public class RowElement extends VisTable {
     protected final VisImageButton btn_log;
 
     public RowElement(String gitLink, boolean autoUpdate) {
-        index = counter;
+        this(0, gitLink, autoUpdate);
+    }
 
-        add(this.lbl_index = new VisLabel("" + (index + 1)))
-                .padRight(10);
+    public RowElement(int _index, String gitLink, boolean autoUpdate) {
+
+        add(this.lbl_index = new VisLabel("" + (_index + 1)))
+                .minWidth(10).padRight(10);
         add(this.fie_gitLink = new VisTextField(gitLink))
                 .growX();
         add(this.lbl_versionInstalled = new VisLabel("TODO"))
@@ -34,9 +37,10 @@ public class RowElement extends VisTable {
                 .padRight(10);
         add(this.btn_log = new VisImageButton(new BaseDrawable()))
                 .minWidth(20); // TODO
+    }
 
-        counter++;
-
+    public RowElement(int index, LinkData linkData) {
+        this(index, linkData.getLink(), linkData.isAlwaysUpdateCheck());
     }
 
     @Override
@@ -51,15 +55,24 @@ public class RowElement extends VisTable {
         return new RowElement(s2[0], Boolean.parseBoolean(s2[1]));
     }
 
-    public int getIndex() {
-        return index;
-    }
-
     public String getLink() {
-        return fie_gitLink.getText();
+        return GithubUtil.link(fie_gitLink.getText());
     }
 
     public boolean isAlwaysCheckUpdate() {
         return cbx_autoUpdate.isChecked();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RowElement element = (RowElement) o;
+        return Objects.equals(getLink(), element.getLink()) && Objects.equals(isAlwaysCheckUpdate(), element.isAlwaysCheckUpdate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLink(),isAlwaysCheckUpdate());
     }
 }
