@@ -77,9 +77,7 @@ public class MediatorDownloadDialog extends Mediator<ViewDownloadDialog> {
             json.setIgnoreUnknownFields(true);
             data.setData(json.fromJson(GithubReleaseData.class, HttpDownloadUtility.downloadToString(link.getLink())));
 
-            System.out.println("flag: "+link.getLink());
-            System.out.println("flag: "+data.getData());
-            if(data.getData()==null)return;
+            if (data.getData() == null) return;
 
             // If:
             // * file doesn't exists at all! ie, application not yet installed
@@ -133,7 +131,7 @@ public class MediatorDownloadDialog extends Mediator<ViewDownloadDialog> {
 
         for (GithubReleaseData.GithubReleaseAssetData assetData : data.getData().assets) {
 
-            if (assetData.name.equals(data.getPluginName()) || CUD.perhapsEqual(assetData.name, data.getPluginName().split("[^a-zA-Z]]"))) {
+            if (assetData.name.equals(data.getPluginName()) || CUD.perhapsEqual(assetData.name, (data.getPluginName() + ".jar").split("[^a-zA-Z]"))) {
 
                 try {
                     HttpDownloadUtility.downloadFile(assetData.browser_download_url, data.getJarPath(), viewComponent);

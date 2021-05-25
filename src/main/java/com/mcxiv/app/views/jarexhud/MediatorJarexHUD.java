@@ -10,6 +10,7 @@ import org.puremvc.java.patterns.mediator.Mediator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 
 public class MediatorJarexHUD extends Mediator<ViewJarexHUD> {
@@ -62,8 +63,14 @@ public class MediatorJarexHUD extends Mediator<ViewJarexHUD> {
 
     private void launchApplication(String appName) {
         try {
-            System.out.println("java -jar " + plugin.getAPI().getCacheDir() + File.separator + appName);
-            Runtime.getRuntime().exec("java -jar " + plugin.getAPI().getCacheDir() + File.separator + appName);
+            String command = String.format("java -jar \"%s%s%s\"", plugin.getAPI().getCacheDir(), File.separator, appName);
+            System.out.println("Command Ran: " + command);
+
+            Process process = Runtime.getRuntime().exec(command);
+
+            Scanner scanner = new Scanner(process.getErrorStream());
+            while (scanner.hasNext()) System.out.println(scanner.nextLine());
+
         } catch (IOException e) {
             e.printStackTrace();
         }

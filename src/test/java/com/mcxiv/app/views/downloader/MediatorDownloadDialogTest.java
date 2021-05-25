@@ -30,8 +30,10 @@ class MediatorDownloadDialogTest {
         plugin.debugMode(true);
         PluginTester.setPlugin(plugin);
 
+//        plugin.facade.sendNotification(EventDownloader.CHECK_FOR_UPDATES_ACTION.getName(),
+//                new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true));
         plugin.facade.sendNotification(EventDownloader.CHECK_FOR_UPDATES_ACTION.getName(),
-                new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true));
+                new LinkData("https://api.github.com/repos/raeleus/skin-composer/releases/latest", true));
 
         MediatorDownloadDialog mediator = plugin.facade.retrieveMediator(MediatorDownloadDialog.CLASS_NAME);
 

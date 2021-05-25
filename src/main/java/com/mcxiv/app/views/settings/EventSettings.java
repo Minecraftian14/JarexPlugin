@@ -9,7 +9,11 @@ public enum EventSettings {
     /**
      * Object sent along is of type RowElement
      */
-    ADD_NEW_ROW_ELEMENT;
+    ADD_NEW_ROW_ELEMENT,
+    /**
+     * Object sent along is of type RowElement
+     */
+    REMOVE_ROW_ELEMENT;
 
     private final String name;
 

@@ -14,6 +14,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CUDTest {
 
+    @Test
+    void testPerhapsEqual() {
+
+        String name = "SkinComposer.jar";
+        String ds = "Skin Composer";
+
+        assertTrue(CUD.perhapsEqual(name, (ds + ".jar").split("[^a-zA-Z]")));
+
+         name = "particle-park.jar";
+         ds = GithubUtil.displayName(GithubUtil.link("raeleus/Particle-Park"));
+
+        assertTrue(CUD.perhapsEqual(name, (ds + ".jar").split("[^a-zA-Z]")));
+
+    }
+
     public static void main(String[] args) throws InterruptedException {
 
         // No exception, especially "org.opentest4j.AssertionFailedError" means, test successful.

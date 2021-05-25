@@ -3,6 +3,8 @@ package com.mcxiv.app.valueobjects;
 import com.mcxiv.app.ui.RowElement;
 import com.mcxiv.app.util.EqualityCompatible;
 
+import java.util.Objects;
+
 public class LinkData implements EqualityCompatible {
 
     public static final String DELIMITER = "&";
@@ -45,5 +47,18 @@ public class LinkData implements EqualityCompatible {
             return element.getLink().equals(getLink()) && element.isAlwaysUpdateCheck()==isAlwaysUpdateCheck();
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LinkData linkData = (LinkData) o;
+        return isAlwaysUpdateCheck == linkData.isAlwaysUpdateCheck && Objects.equals(link, linkData.link);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(link, isAlwaysUpdateCheck);
     }
 }

@@ -1,5 +1,7 @@
 package com.mcxiv.app.views.settings;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mcxiv.app.ui.RowElement;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
@@ -39,6 +41,8 @@ public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
                 // Setting the settings in viewComponent
                 viewComponent.setSettings(settingsData);
 
+                RowElement.ButtonRemoveAction.setButtonRemoveAction(element -> facade.sendNotification(EventSettings.REMOVE_ROW_ELEMENT.getName(), element));
+
                 facade.sendNotification(MsgAPI.ADD_PLUGIN_SETTINGS, viewComponent);
                 break;
 
@@ -48,7 +52,16 @@ public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
                 viewComponent.translateSettingsToView();
                 break;
 
+            case REMOVE_ROW_ELEMENT:
+                RowElement elementTBR = notification.getBody();
+                System.out.println(
+                        viewComponent.getSettings().registeredLinks.removeValue(new LinkData(elementTBR.getLink(), elementTBR.isAlwaysUpdateCheck()), false)
+                );
+                viewComponent.translateSettingsToView();
+                break;
+
         }
 
     }
+
 }

@@ -1,12 +1,18 @@
 package com.mcxiv.app.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.*;
 import com.mcxiv.app.util.EqualityCompatible;
 import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.valueobjects.LinkData;
+import com.mcxiv.app.views.settings.EventSettings;
+import com.mcxiv.app.views.settings.MediatorJarexSettings;
+import org.puremvc.java.interfaces.IFacade;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class RowElement extends VisTable implements EqualityCompatible {
 
@@ -40,10 +46,8 @@ public class RowElement extends VisTable implements EqualityCompatible {
                 .padRight(10);
         add(this.btn_log = new VisImageButton(new BaseDrawable()))
                 .minWidth(20); // TODO
-    }
 
-    public RowElement(int index, LinkData linkData) {
-        this(index, linkData.getLink(), linkData.isAlwaysUpdateCheck());
+        btn_log.addListener(new ButtonRemoveAction(this));
     }
 
     @Override
@@ -88,4 +92,26 @@ public class RowElement extends VisTable implements EqualityCompatible {
         }
         return false;
     }
+
+    public static class ButtonRemoveAction extends ChangeListener {
+
+        private static Consumer<RowElement> buttonRemoveAction = (ele) -> System.out.println("Button Remove Action Undefined!");
+
+        public static void setButtonRemoveAction(Consumer<RowElement> buttonRemoveAction) {
+            ButtonRemoveAction.buttonRemoveAction = buttonRemoveAction;
+        }
+
+        private final RowElement element;
+
+        public ButtonRemoveAction(RowElement element) {
+            this.element = element;
+        }
+
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+            buttonRemoveAction.accept(element);
+        }
+    }
+
+
 }
