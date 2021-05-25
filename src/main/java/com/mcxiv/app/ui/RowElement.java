@@ -1,13 +1,20 @@
 package com.mcxiv.app.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.*;
+import com.mcxiv.app.util.EqualityCompatible;
 import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.valueobjects.LinkData;
+import com.mcxiv.app.views.settings.EventSettings;
+import com.mcxiv.app.views.settings.MediatorJarexSettings;
+import org.puremvc.java.interfaces.IFacade;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
-public class RowElement extends VisTable {
+public class RowElement extends VisTable implements EqualityCompatible {
 
     /**
      * A delimiter to separate github links and auto update setting
@@ -27,6 +34,8 @@ public class RowElement extends VisTable {
 
     public RowElement(int _index, String gitLink, boolean autoUpdate) {
 
+        gitLink = GithubUtil.authorAndRepo(gitLink);
+
         add(this.lbl_index = new VisLabel("" + (_index + 1)))
                 .minWidth(10).padRight(10);
         add(this.fie_gitLink = new VisTextField(gitLink))
@@ -37,15 +46,13 @@ public class RowElement extends VisTable {
                 .padRight(10);
         add(this.btn_log = new VisImageButton(new BaseDrawable()))
                 .minWidth(20); // TODO
-    }
 
-    public RowElement(int index, LinkData linkData) {
-        this(index, linkData.getLink(), linkData.isAlwaysUpdateCheck());
+        btn_log.addListener(new ButtonRemoveAction(this));
     }
 
     @Override
     public String toString() {
-        return String.format("{%s%s%s}", getLink(), DELIMITER, isAlwaysCheckUpdate());
+        return String.format("{%s%s%s}", getLink(), DELIMITER, isAlwaysUpdateCheck());
     }
 
     public static RowElement fromString(String s) {
@@ -59,7 +66,7 @@ public class RowElement extends VisTable {
         return GithubUtil.link(fie_gitLink.getText());
     }
 
-    public boolean isAlwaysCheckUpdate() {
+    public boolean isAlwaysUpdateCheck() {
         return cbx_autoUpdate.isChecked();
     }
 
@@ -68,11 +75,43 @@ public class RowElement extends VisTable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RowElement element = (RowElement) o;
-        return Objects.equals(getLink(), element.getLink()) && Objects.equals(isAlwaysCheckUpdate(), element.isAlwaysCheckUpdate());
+        return Objects.equals(getLink(), element.getLink()) && Objects.equals(isAlwaysUpdateCheck(), element.isAlwaysUpdateCheck());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLink(),isAlwaysCheckUpdate());
+        return Objects.hash(getLink(), isAlwaysUpdateCheck());
     }
+
+    @Override
+    public boolean equivalent(EqualityCompatible object) {
+        if (equals(object)) return true;
+        if (object instanceof LinkData) {
+            LinkData data = ((LinkData) object);
+            return data.getLink().equals(getLink()) && data.isAlwaysUpdateCheck() == isAlwaysUpdateCheck();
+        }
+        return false;
+    }
+
+    public static class ButtonRemoveAction extends ChangeListener {
+
+        private static Consumer<RowElement> buttonRemoveAction = (ele) -> System.out.println("Button Remove Action Undefined!");
+
+        public static void setButtonRemoveAction(Consumer<RowElement> buttonRemoveAction) {
+            ButtonRemoveAction.buttonRemoveAction = buttonRemoveAction;
+        }
+
+        private final RowElement element;
+
+        public ButtonRemoveAction(RowElement element) {
+            this.element = element;
+        }
+
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+            buttonRemoveAction.accept(element);
+        }
+    }
+
+
 }

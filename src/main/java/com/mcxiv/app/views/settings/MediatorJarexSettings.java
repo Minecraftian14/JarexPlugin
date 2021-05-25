@@ -1,5 +1,7 @@
 package com.mcxiv.app.views.settings;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mcxiv.app.ui.RowElement;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
@@ -7,8 +9,6 @@ import games.rednblack.h2d.common.MsgAPI;
 import games.rednblack.h2d.common.plugins.H2DPluginAdapter;
 import org.puremvc.java.interfaces.INotification;
 import org.puremvc.java.patterns.mediator.Mediator;
-
-import java.util.HashMap;
 
 public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
 
@@ -41,16 +41,27 @@ public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
                 // Setting the settings in viewComponent
                 viewComponent.setSettings(settingsData);
 
+                RowElement.ButtonRemoveAction.setButtonRemoveAction(element -> facade.sendNotification(EventSettings.REMOVE_ROW_ELEMENT.getName(), element));
+
                 facade.sendNotification(MsgAPI.ADD_PLUGIN_SETTINGS, viewComponent);
                 break;
 
             case ADD_NEW_ROW_ELEMENT:
                 RowElement element = notification.getBody();
-                viewComponent.getSettings().registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysCheckUpdate()));
+                viewComponent.getSettings().registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysUpdateCheck()));
+                viewComponent.translateSettingsToView();
+                break;
+
+            case REMOVE_ROW_ELEMENT:
+                RowElement elementTBR = notification.getBody();
+                System.out.println(
+                        viewComponent.getSettings().registeredLinks.removeValue(new LinkData(elementTBR.getLink(), elementTBR.isAlwaysUpdateCheck()), false)
+                );
                 viewComponent.translateSettingsToView();
                 break;
 
         }
 
     }
+
 }

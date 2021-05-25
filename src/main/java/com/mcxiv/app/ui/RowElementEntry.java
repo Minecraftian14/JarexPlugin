@@ -1,6 +1,7 @@
 package com.mcxiv.app.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import java.util.function.Consumer;
@@ -8,11 +9,16 @@ import java.util.function.Consumer;
 public class RowElementEntry extends RowElement {
 
     public RowElementEntry(Consumer<RowElement> addNewElementAction) {
-        super(0,"Enter New URL", true);
+        super(0,"", true);
 
         lbl_index.setText(">");
         lbl_versionInstalled.setText("");
-//        btn_log.removeListener(); // TODO
+        fie_gitLink.setText("Enter New URL");
+
+        for (EventListener listener : btn_log.getListeners())
+            if (listener instanceof ButtonRemoveAction)
+                btn_log.removeListener(listener);
+
         btn_log.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -23,7 +29,10 @@ public class RowElementEntry extends RowElement {
     }
 
     private RowElement prepare() {
-        return new RowElement(getLink(), isAlwaysCheckUpdate());
+        RowElement element = new RowElement(getLink(), isAlwaysUpdateCheck());
+        fie_gitLink.setText("Enter New URL");
+        cbx_autoUpdate.setChecked(true);
+        return element;
     }
 
 }

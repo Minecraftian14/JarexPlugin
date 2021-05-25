@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Implementation-Title: JarexPlugin
-Implementation-Version: 0.2
+Implementation-Version: 0.3
 Main-Class: com.mcxiv.app.JarexPlugin
 

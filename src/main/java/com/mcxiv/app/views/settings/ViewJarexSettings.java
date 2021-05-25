@@ -1,17 +1,19 @@
 package com.mcxiv.app.views.settings;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mcxiv.app.ui.RowElement;
 import com.mcxiv.app.ui.RowElementEntry;
 import com.mcxiv.app.util.CUD;
-import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
 import games.rednblack.h2d.common.MsgAPI;
 import games.rednblack.h2d.common.plugins.H2DPluginAdapter;
 import games.rednblack.h2d.common.view.SettingsNodeValue;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
 
@@ -20,6 +22,8 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
 
     private final VisLabel title;
     private final RowElementEntry entryElement;
+
+    private JarexSettingsData localSettings = new JarexSettingsData();
 
     public ViewJarexSettings(H2DPluginAdapter _plugin) {
         super("Jarex", _plugin.facade);
@@ -32,17 +36,25 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
         );
     }
 
+    @Override
+    public void setSettings(JarexSettingsData settings) {
+        localSettings.fromSettings(settings);
+    }
+
+    @Override
+    public JarexSettingsData getSettings() {
+        return localSettings;
+    }
+
     private void createUI() {
         VisTable root = getContentTable();
         root.clearChildren();
 
         root.add(title).pad(25).row();
 
-        JarexSettingsData settings = getSettings();
-
-        if (settings != null)
-            CUD.forEach(settings.registeredLinks, (index, linkData) -> {
-                root.add(new RowElement(index, GithubUtil.authorAndRepo(linkData.getLink()), linkData.isAlwaysUpdateCheck()))
+        if (localSettings != null)
+            CUD.forEach(localSettings.registeredLinks, (index, linkData) -> {
+                root.add(new RowElement(index, linkData.getLink(), linkData.isAlwaysUpdateCheck()))
                         .padBottom(6).padRight(20).padLeft(20)
                         .growX().row();
             });
@@ -65,7 +77,7 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
         getContentTable().getChildren().forEach(actor -> {
             if (actor instanceof RowElement && !actor.equals(entryElement)) {
                 RowElement element = (RowElement) actor;
-                newSettings.registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysCheckUpdate()));
+                newSettings.registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysUpdateCheck()));
             }
         });
 
@@ -82,26 +94,21 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
     public boolean validateSettings() {
         if (!loaded) return false;
 
-        JarexSettingsData settings = getSettings();
+        var originalSettings = new JarexSettingsData();
+        originalSettings.fromStorage(plugin.getStorage());
 
-        for (Actor actor : getContentTable().getChildren()) {
+        List<RowElement> rowElements = Arrays.stream(getContentTable().getChildren().items)
+                .filter(actor -> actor instanceof RowElement && actor != entryElement)
+                .map(actor -> (RowElement) actor).collect(Collectors.toList());
 
-            if (actor instanceof RowElement && !actor.equals(entryElement)) {
+        // If there's any RowElement whose data is not available in
+        // originalSettings, then we need to translate View To Setting.
+        // For that, this method should return true.
 
-                RowElement element = (RowElement) actor;
 
-                boolean flag = true;
-
-                for (LinkData link : settings.registeredLinks)
-                    if (link.getLink().equals(element.getLink()) && link.isAlwaysUpdateCheck() == element.isAlwaysCheckUpdate())
-                        flag = false;
-
-                return flag;
-
-            }
-        }
-
-        return false;
+        return !CUD.equalsList(
+                rowElements,
+                originalSettings.registeredLinks
+        );
     }
-
 }
