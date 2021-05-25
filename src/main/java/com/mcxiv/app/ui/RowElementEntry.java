@@ -23,7 +23,7 @@ public class RowElementEntry extends RowElement {
     }
 
     private RowElement prepare() {
-        return new RowElement(getLink(), isAlwaysCheckUpdate());
+        return new RowElement(getLink(), isAlwaysUpdateCheck());
     }
 
 }

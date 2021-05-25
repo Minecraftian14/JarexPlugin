@@ -37,4 +37,8 @@ public class JarexSettingsData {
         settings.put(CLASS_NAME, builder.toString());
     }
 
+    public void fromSettings(JarexSettingsData settings) {
+        registeredLinks.clear();
+        registeredLinks.addAll(settings.registeredLinks);
+    }
 }

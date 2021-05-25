@@ -15,7 +15,7 @@ class MediatorDownloadDialogTest {
             new JarexSettingsData() {{
                 registeredLinks.add(
                         new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true),
-                        new LinkData("https://api.github.com/repos/raelus/skin-composer/releases/latest", true)
+                        new LinkData("https://api.github.com/repos/raeleus/skin-composer/releases/latest", true)
                 );
             }}.toStorage(this.pluginStorage.computeIfAbsent(JarexPlugin.CLASS_NAME, k -> new HashMap<>()));
         }});
@@ -28,6 +28,7 @@ class MediatorDownloadDialogTest {
 
         JarexPlugin plugin = new JarexPlugin();
         plugin.debugMode(true);
+        PluginTester.setPlugin(plugin);
 
         plugin.facade.sendNotification(EventDownloader.CHECK_FOR_UPDATES_ACTION.getName(),
                 new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true));

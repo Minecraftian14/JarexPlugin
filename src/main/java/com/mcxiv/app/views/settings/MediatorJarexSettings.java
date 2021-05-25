@@ -8,8 +8,6 @@ import games.rednblack.h2d.common.plugins.H2DPluginAdapter;
 import org.puremvc.java.interfaces.INotification;
 import org.puremvc.java.patterns.mediator.Mediator;
 
-import java.util.HashMap;
-
 public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
 
     public static final String CLASS_NAME = MediatorJarexSettings.class.getName();
@@ -46,7 +44,7 @@ public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
 
             case ADD_NEW_ROW_ELEMENT:
                 RowElement element = notification.getBody();
-                viewComponent.getSettings().registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysCheckUpdate()));
+                viewComponent.getSettings().registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysUpdateCheck()));
                 viewComponent.translateSettingsToView();
                 break;
 

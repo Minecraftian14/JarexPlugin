@@ -16,14 +16,16 @@ com/mcxiv/app/valueobjects/DownloadData.java
  com.mcxiv.app.valueobjects.DownloadData
 com/mcxiv/app/util/GithubUtil.java
  com.mcxiv.app.util.GithubUtil
-com/mcxiv/app/views/downloader/EventDownloader.java
- com.mcxiv.app.views.downloader.EventDownloader
+com/mcxiv/app/JarexPlugin.java
+ com.mcxiv.app.JarexPlugin
 com/mcxiv/app/views/settings/EventSettings.java
  com.mcxiv.app.views.settings.EventSettings
 com/mcxiv/app/views/downloader/ViewDownloadDialog.java
  com.mcxiv.app.views.downloader.ViewDownloadDialog
-com/mcxiv/app/views/settings/ViewJarexSettings.java
- com.mcxiv.app.views.settings.ViewJarexSettings
+com/mcxiv/app/views/downloader/EventDownloader.java
+ com.mcxiv.app.views.downloader.EventDownloader
+com/mcxiv/app/util/EqualityCompatible.java
+ com.mcxiv.app.util.EqualityCompatible
 com/mcxiv/app/views/downloader/MediatorDownloadDialog.java
  com.mcxiv.app.views.downloader.MediatorDownloadDialog
  com.mcxiv.app.views.downloader.MediatorDownloadDialog$1
@@ -38,10 +40,10 @@ com/mcxiv/app/views/jarexhud/MediatorJarexHUD.java
 com/mcxiv/app/ui/IDENTITY.java
  com.mcxiv.app.ui.IDENTITY
  com.mcxiv.app.ui.IDENTITY$1
+com/mcxiv/app/util/HttpDownloadUtility.java
+ com.mcxiv.app.util.HttpDownloadUtility
+com/mcxiv/app/views/settings/ViewJarexSettings.java
+ com.mcxiv.app.views.settings.ViewJarexSettings
 com/mcxiv/app/views/settings/MediatorJarexSettings.java
  com.mcxiv.app.views.settings.MediatorJarexSettings
  com.mcxiv.app.views.settings.MediatorJarexSettings$1
-com/mcxiv/app/util/HttpDownloadUtility.java
- com.mcxiv.app.util.HttpDownloadUtility
-com/mcxiv/app/JarexPlugin.java
- com.mcxiv.app.JarexPlugin

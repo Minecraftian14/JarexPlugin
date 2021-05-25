@@ -17,7 +17,7 @@ class MediatorJarexSettingsTest {
             new JarexSettingsData() {{
                 registeredLinks.add(
                         new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true),
-                        new LinkData("https://api.github.com/repos/raelus/skin-composer/releases/latest", true)
+                        new LinkData("https://api.github.com/repos/raeleus/skin-composer/releases/latest", true)
                 );
             }}.toStorage(this.pluginStorage.computeIfAbsent(JarexPlugin.CLASS_NAME, k -> new HashMap<>()));
         }});
