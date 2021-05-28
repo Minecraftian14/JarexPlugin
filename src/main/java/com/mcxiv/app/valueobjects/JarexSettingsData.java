@@ -2,6 +2,7 @@ package com.mcxiv.app.valueobjects;
 
 import com.badlogic.gdx.utils.Array;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class JarexSettingsData {
@@ -13,7 +14,7 @@ public class JarexSettingsData {
      */
     public static final String DELIMITER = "__rickroll__";
 
-    public Array<LinkData> registeredLinks = new Array<>();
+    public ArrayList<LinkData> registeredLinks = new ArrayList<>();
 
     public void fromStorage(Map<String, Object> settings) {
         String links = (String) settings.get(CLASS_NAME);
@@ -30,9 +31,9 @@ public class JarexSettingsData {
     public void toStorage(Map<String, Object> settings) {
         StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < registeredLinks.size - 1; i++)
+        for (int i = 0; i < registeredLinks.size() - 1; i++)
             builder.append(registeredLinks.get(i).row()).append(DELIMITER);
-        builder.append(registeredLinks.get(registeredLinks.size - 1).row());
+        builder.append(registeredLinks.get(registeredLinks.size() - 1).row());
 
         settings.put(CLASS_NAME, builder.toString());
     }

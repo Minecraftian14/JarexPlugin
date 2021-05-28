@@ -4,15 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.*;
+import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.util.EqualityCompatible;
 import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.valueobjects.LinkData;
 import com.mcxiv.app.views.settings.EventSettings;
-import com.mcxiv.app.views.settings.MediatorJarexSettings;
-import org.puremvc.java.interfaces.IFacade;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class RowElement extends VisTable implements EqualityCompatible {
 
@@ -26,40 +24,26 @@ public class RowElement extends VisTable implements EqualityCompatible {
     protected final VisTextField fie_gitLink;
     protected final VisLabel lbl_versionInstalled;
     protected final VisCheckBox cbx_autoUpdate;
-    protected final VisImageButton btn_log;
+    protected final VisImageButton btn_action;
 
-    public RowElement(String gitLink, boolean autoUpdate) {
-        this(0, gitLink, autoUpdate);
+    public RowElement(LinkData link) {
+        this(0, link);
     }
 
-    public RowElement(int _index, String gitLink, boolean autoUpdate) {
-
-        gitLink = GithubUtil.authorAndRepo(gitLink);
+    public RowElement(int _index, LinkData link) {
 
         add(this.lbl_index = new VisLabel("" + (_index + 1)))
                 .minWidth(10).padRight(10);
-        add(this.fie_gitLink = new VisTextField(gitLink))
+        add(this.fie_gitLink = new VisTextField(GithubUtil.authorAndRepo(link.getLink())))
                 .growX();
-        add(this.lbl_versionInstalled = new VisLabel("TODO"))
-                .minWidth(70).padLeft(10).padRight(10); // TODO
-        add(this.cbx_autoUpdate = new VisCheckBox("", autoUpdate))
+        add(this.lbl_versionInstalled = new VisLabel(link.getVersion()))
+                .minWidth(70).padLeft(10).padRight(10);
+        add(this.cbx_autoUpdate = new VisCheckBox("", link.isAlwaysUpdateCheck()))
                 .padRight(10);
-        add(this.btn_log = new VisImageButton(new BaseDrawable()))
-                .minWidth(20); // TODO
+        add(this.btn_action = new VisImageButton(new BaseDrawable()))
+                .minWidth(20);
 
-        btn_log.addListener(new ButtonRemoveAction(this));
-    }
-
-    @Override
-    public String toString() {
-        return String.format("{%s%s%s}", getLink(), DELIMITER, isAlwaysUpdateCheck());
-    }
-
-    public static RowElement fromString(String s) {
-        if (s.length() < 2) return null;
-        s = s.substring(1, s.length() - 1);
-        String[] s2 = s.split(DELIMITER);
-        return new RowElement(s2[0], Boolean.parseBoolean(s2[1]));
+        btn_action.addListener(new ButtonRemoveAction(this));
     }
 
     public String getLink() {
@@ -95,12 +79,6 @@ public class RowElement extends VisTable implements EqualityCompatible {
 
     public static class ButtonRemoveAction extends ChangeListener {
 
-        private static Consumer<RowElement> buttonRemoveAction = (ele) -> System.out.println("Button Remove Action Undefined!");
-
-        public static void setButtonRemoveAction(Consumer<RowElement> buttonRemoveAction) {
-            ButtonRemoveAction.buttonRemoveAction = buttonRemoveAction;
-        }
-
         private final RowElement element;
 
         public ButtonRemoveAction(RowElement element) {
@@ -109,7 +87,7 @@ public class RowElement extends VisTable implements EqualityCompatible {
 
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-            buttonRemoveAction.accept(element);
+            JarexPlugin.plugin.facade.sendNotification(EventSettings.REMOVE_ROW_ELEMENT.getName(), element);
         }
     }
 

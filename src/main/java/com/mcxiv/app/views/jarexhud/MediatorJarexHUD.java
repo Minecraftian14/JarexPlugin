@@ -1,5 +1,6 @@
 package com.mcxiv.app.views.jarexhud;
 
+import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.util.ThreadUtil;
 import com.mcxiv.app.valueobjects.LinkData;
@@ -11,17 +12,15 @@ import org.puremvc.java.patterns.mediator.Mediator;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
 
 
 public class MediatorJarexHUD extends Mediator<ViewJarexHUD> {
 
     public static final String CLASS_NAME = MediatorJarexHUD.class.getName();
 
-    private final H2DPluginAdapter plugin;
-
-    public MediatorJarexHUD(H2DPluginAdapter _plugin, boolean createPanel) {
-        super(CLASS_NAME, new ViewJarexHUD(_plugin, createPanel));
-        this.plugin = _plugin;
+    public MediatorJarexHUD(boolean createPanel) {
+        super(CLASS_NAME, new ViewJarexHUD(createPanel));
     }
 
     @Override
@@ -58,22 +57,25 @@ public class MediatorJarexHUD extends Mediator<ViewJarexHUD> {
             facade.sendNotification(EventDownloader.CHECK_FOR_UPDATES_ACTION.getName(), data);
             return;
         }
-        ThreadUtil.launch(() -> launchApplication(GithubUtil.applicationJarName(data.getLink())));
+        ThreadUtil.launch(() -> launchApplication(data));
     }
 
-    private void launchApplication(String appName) {
+    private void launchApplication(LinkData data) {
         try {
-            String command = String.format("java -jar \"%s%s%s\"", plugin.getAPI().getCacheDir(), File.separator, appName);
-            System.out.println("Command Ran: " + command);
+            String appName = GithubUtil.applicationJarName(data.getLink());
 
+            String command = String.format("java -jar \"%s%s%s\"", JarexPlugin.plugin.getAPI().getCacheDir(), File.separator, appName);
+
+            System.out.println("Command Ran: " + command);
             Process process = Runtime.getRuntime().exec(command);
 
-            Scanner scanner = new Scanner(process.getErrorStream());
-            while (scanner.hasNext()) System.out.println(scanner.nextLine());
+            ThreadUtil.launchForOnly(() -> ThreadUtil.readStream(process.getInputStream()), 20);
+            ThreadUtil.launchForOnly(() -> ThreadUtil.readStream(process.getErrorStream()), 5);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 }

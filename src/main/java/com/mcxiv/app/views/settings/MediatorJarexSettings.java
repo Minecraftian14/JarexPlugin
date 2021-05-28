@@ -2,7 +2,9 @@ package com.mcxiv.app.views.settings;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.ui.RowElement;
+import com.mcxiv.app.util.EqualityCompatible;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
 import games.rednblack.h2d.common.MsgAPI;
@@ -14,11 +16,8 @@ public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
 
     public static final String CLASS_NAME = MediatorJarexSettings.class.getName();
 
-    private final H2DPluginAdapter plugin;
-
-    public MediatorJarexSettings(H2DPluginAdapter _plugin) {
-        super(CLASS_NAME, new ViewJarexSettings(_plugin));
-        plugin = _plugin;
+    public MediatorJarexSettings() {
+        super(CLASS_NAME, new ViewJarexSettings());
     }
 
     @Override
@@ -36,30 +35,30 @@ public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
 
             case ADD_SETTINGS_MENU_ACTION:
                 var settingsData = new JarexSettingsData();
-                settingsData.fromStorage(plugin.getStorage());
+                settingsData.fromStorage(JarexPlugin.plugin.getStorage());
 
                 // Setting the settings in viewComponent
                 viewComponent.setSettings(settingsData);
-
-                RowElement.ButtonRemoveAction.setButtonRemoveAction(element -> facade.sendNotification(EventSettings.REMOVE_ROW_ELEMENT.getName(), element));
 
                 facade.sendNotification(MsgAPI.ADD_PLUGIN_SETTINGS, viewComponent);
                 break;
 
             case ADD_NEW_ROW_ELEMENT:
-                RowElement element = notification.getBody();
-                viewComponent.getSettings().registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysUpdateCheck()));
+                Object object = notification.getBody();
+                if (object instanceof LinkData)
+                    viewComponent.getSettings().registeredLinks.add((LinkData) object);
+                else {
+                    RowElement element = (RowElement) object;
+                    viewComponent.getSettings().registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysUpdateCheck()));
+                }
                 viewComponent.translateSettingsToView();
                 break;
 
             case REMOVE_ROW_ELEMENT:
-                RowElement elementTBR = notification.getBody();
-                System.out.println(
-                        viewComponent.getSettings().registeredLinks.removeValue(new LinkData(elementTBR.getLink(), elementTBR.isAlwaysUpdateCheck()), false)
-                );
+                EqualityCompatible elementObj = notification.getBody();
+                viewComponent.getSettings().registeredLinks.removeIf(elementObj::equivalent);
                 viewComponent.translateSettingsToView();
                 break;
-
         }
 
     }

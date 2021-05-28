@@ -15,10 +15,8 @@ class MediatorJarexSettingsTest {
     public static void main(String[] args) throws InterruptedException {
         PluginTester.getAPI().setEditorConfigVO(new EditorConfigVO() {{
             new JarexSettingsData() {{
-                registeredLinks.add(
-                        new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true),
-                        new LinkData("https://api.github.com/repos/raeleus/skin-composer/releases/latest", true)
-                );
+                registeredLinks.add(new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true));
+                registeredLinks.add(new LinkData("https://api.github.com/repos/raeleus/skin-composer/releases/latest", true));
             }}.toStorage(this.pluginStorage.computeIfAbsent(JarexPlugin.CLASS_NAME, k -> new HashMap<>()));
         }});
         PluginTester.launchTest(null, MediatorJarexSettingsTest::Test);

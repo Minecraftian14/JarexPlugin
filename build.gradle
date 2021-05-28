@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.mcxiv.app'
-version '0.3'
+version '1.0'
 
 repositories {
     mavenCentral()

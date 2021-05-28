@@ -2,6 +2,7 @@ package com.mcxiv.app.views.settings;
 
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.ui.RowElement;
 import com.mcxiv.app.ui.RowElementEntry;
 import com.mcxiv.app.util.CUD;
@@ -17,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
 
-    private H2DPluginAdapter plugin;
     private boolean loaded = false;
 
     private final VisLabel title;
@@ -25,15 +25,10 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
 
     private JarexSettingsData localSettings = new JarexSettingsData();
 
-    public ViewJarexSettings(H2DPluginAdapter _plugin) {
-        super("Jarex", _plugin.facade);
-        this.plugin = _plugin;
-
+    public ViewJarexSettings() {
+        super("Jarex", JarexPlugin.plugin.facade);
         title = new VisLabel("Registered Application Links:");
-
-        entryElement = new RowElementEntry(element ->
-                plugin.facade.sendNotification(EventSettings.ADD_NEW_ROW_ELEMENT.getName(), element)
-        );
+        entryElement = new RowElementEntry();
     }
 
     @Override
@@ -54,7 +49,7 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
 
         if (localSettings != null)
             CUD.forEach(localSettings.registeredLinks, (index, linkData) -> {
-                root.add(new RowElement(index, linkData.getLink(), linkData.isAlwaysUpdateCheck()))
+                root.add(new RowElement(index, linkData))
                         .padBottom(6).padRight(20).padLeft(20)
                         .growX().row();
             });
@@ -83,7 +78,7 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
 
         setSettings(newSettings);
 
-        newSettings.toStorage(plugin.getStorage());
+        newSettings.toStorage(JarexPlugin.plugin.getStorage());
         facade.sendNotification(MsgAPI.SAVE_EDITOR_CONFIG);
     }
 
@@ -95,7 +90,7 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
         if (!loaded) return false;
 
         var originalSettings = new JarexSettingsData();
-        originalSettings.fromStorage(plugin.getStorage());
+        originalSettings.fromStorage(JarexPlugin.plugin.getStorage());
 
         List<RowElement> rowElements = Arrays.stream(getContentTable().getChildren().items)
                 .filter(actor -> actor instanceof RowElement && actor != entryElement)

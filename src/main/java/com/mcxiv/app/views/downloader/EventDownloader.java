@@ -15,7 +15,13 @@ public enum EventDownloader {
      * An event sent to start a jar download.
      * Usually, the attached body is of type: LinkData.
      */
-    CHECK_FOR_UPDATES_ACTION;
+    CHECK_FOR_UPDATES_ACTION,
+
+    /**
+     * An event sent to let user choose and download the jar file.
+     * Usually, the attached body is of type: DownloadData.
+     */
+    OPEN_JAR_CHOOSER_MENU;
 
     private final String name;
 

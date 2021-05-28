@@ -1,7 +1,9 @@
 package com.mcxiv.app.util;
 
+import com.badlogic.gdx.utils.Json;
 import com.mcxiv.app.ui.IDENTITY;
 import games.rednblack.h2d.common.ProgressHandler;
+import games.rednblack.h2d.common.network.model.GithubReleaseData;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -64,4 +66,9 @@ public class HttpDownloadUtility {
         connection.disconnect();
     }
 
+    public static GithubReleaseData getGithubReleaseData(String link) throws IOException {
+        Json json = new Json();
+        json.setIgnoreUnknownFields(true);
+        return json.fromJson(GithubReleaseData.class, HttpDownloadUtility.downloadToString(link));
+    }
 }

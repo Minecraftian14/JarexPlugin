@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,8 +23,8 @@ class CUDTest {
 
         assertTrue(CUD.perhapsEqual(name, (ds + ".jar").split("[^a-zA-Z]")));
 
-         name = "particle-park.jar";
-         ds = GithubUtil.displayName(GithubUtil.link("raeleus/Particle-Park"));
+        name = "particle-park.jar";
+        ds = GithubUtil.displayName(GithubUtil.link("raeleus/Particle-Park"));
 
         assertTrue(CUD.perhapsEqual(name, (ds + ".jar").split("[^a-zA-Z]")));
 
@@ -33,10 +34,10 @@ class CUDTest {
 
         // No exception, especially "org.opentest4j.AssertionFailedError" means, test successful.
 
-        PluginTester.launchTest(null, CUDTest::Test);
+        PluginTester.launchTest(null, CUDTest::TestEqualLists);
     }
 
-    static void Test() {
+    static void TestEqualLists() {
 
         ArrayList<LinkData> datas = new ArrayList<>();
         datas.add(new LinkData(GithubUtil.link("c/a"), true));
@@ -47,10 +48,10 @@ class CUDTest {
 
         Array<RowElement> elements = new Array<>();
         elements.addAll(
-                new RowElement(GithubUtil.link("a/d"), true),
-                new RowElement(GithubUtil.link("b/b"), true),
-                new RowElement(GithubUtil.link("c/a"), true),
-                new RowElement(GithubUtil.link("d/c"), true)
+                new RowElement(new LinkData(GithubUtil.link("a/d"), true)),
+                new RowElement(new LinkData(GithubUtil.link("b/b"), true)),
+                new RowElement(new LinkData(GithubUtil.link("c/a"), true)),
+                new RowElement(new LinkData(GithubUtil.link("d/c"), true))
         );
 
         assertTrue(CUD.equalsList(datas, elements));
@@ -179,4 +180,43 @@ class CUDTest {
         }
     }
 
+
+    @Test
+    void TestTryAndLazyTry() {
+
+        CUD.Try(() -> {
+            int i = 1 / 1;
+            System.out.println("A:" + i);
+        });
+
+        CUD.Try(() -> {
+            int i = 1 / 0;
+            System.out.println("B:" + i);
+        });
+
+        int i = CUD.Try(() -> 1 / 1).Default(() -> 0);
+        System.out.println("C:" + i);
+        i = CUD.Try(() -> 1 / 0).Default(() -> 0);
+        System.out.println("D:" + i);
+
+
+        //
+
+
+        CUD.LazyTry(() -> {
+            int k = 1 / 1;
+            System.out.println("E:" + k);
+        }).Catch(e -> System.out.println("Oh, an error?"));
+
+        CUD.LazyTry(() -> {
+            int k = 1 / 0;
+            System.out.println("F:" + k);
+        }).Catch(e -> System.out.println("Oh, an error?"));
+
+        i = CUD.LazyTry(() -> 1 / 1).Catch(e -> System.out.println("Oh, an error?")).Default(() -> 0);
+        System.out.println("G:" + i);
+        i = CUD.LazyTry(() -> 1 / 0).Catch(e -> System.out.println("Oh, an error?")).Default(() -> 0);
+        System.out.println("H:" + i);
+
+    }
 }
