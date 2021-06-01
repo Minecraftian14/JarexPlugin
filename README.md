@@ -11,11 +11,11 @@ Go to the settings menu of Jarex plugin.
 
 ![image](https://user-images.githubusercontent.com/52451860/119506623-b9c91900-bd8b-11eb-9f73-317f3da2e731.png)
 
-Then type in a new entry with the value "author/repository". Optionally, check the checkbox right next to it, if you want it to automatically update the application when a new update is available.
+Then type in a new entry with the value "author/repository". Optionally, check the checkbox right next to it, if you want Jarex to check for new updates.
 
 ![image](https://user-images.githubusercontent.com/52451860/119507052-1f1d0a00-bd8c-11eb-8e26-cc178fa349d3.png)
 
-Finally press the last button to add the link. PLease excuse the TODO placed there 😅
+Finally press the last button to add the link.
 
 ![image](https://user-images.githubusercontent.com/52451860/119507150-32c87080-bd8c-11eb-82f4-d71a3f3f3d12.png)
 
