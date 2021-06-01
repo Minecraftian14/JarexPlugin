@@ -1,6 +1,8 @@
 package com.mcxiv.app.valueobjects;
 
+import com.mcxiv.app.ui.IDENTITY;
 import com.mcxiv.app.ui.RowElement;
+import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.util.EqualityCompatible;
 
 import java.util.Objects;
@@ -45,7 +47,7 @@ public class LinkData implements EqualityCompatible {
         return String.format("%s%s%s%s%s", link, DELIMITER, version, DELIMITER, isAlwaysUpdateCheck);
     }
 
-    public static LinkData deRow(String row) {
+    public static LinkData deRow(String row){
         String[] ele = row.split(DELIMITER);
         return new LinkData(ele[0], ele[1], Boolean.parseBoolean(ele[2]));
     }
@@ -65,11 +67,11 @@ public class LinkData implements EqualityCompatible {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LinkData linkData = (LinkData) o;
-        return isAlwaysUpdateCheck == linkData.isAlwaysUpdateCheck && Objects.equals(link, linkData.link);
+        return Objects.equals(link, linkData.link);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(link, isAlwaysUpdateCheck);
+        return Objects.hash(link);
     }
 }

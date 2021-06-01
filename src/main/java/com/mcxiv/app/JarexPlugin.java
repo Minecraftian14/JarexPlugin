@@ -1,5 +1,6 @@
 package com.mcxiv.app;
 
+import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.views.downloader.MediatorDownloadDialog;
 import com.mcxiv.app.views.jarexhud.EventHUD;
 import com.mcxiv.app.views.jarexhud.MediatorJarexHUD;
@@ -35,7 +36,7 @@ public class JarexPlugin extends H2DPluginAdapter {
 
         pluginAPI.addMenuItem(MenuAPI.WINDOW_MENU, "~ Jarex ~", EventHUD.OPEN_JAREX_HUD_ACTION.getName());
 
-        facade.sendNotification(EventSettings.ADD_SETTINGS_MENU_ACTION.getName());
+        CUD.event(EventSettings.ADD_SETTINGS_MENU_ACTION.getName());
     }
 
 }

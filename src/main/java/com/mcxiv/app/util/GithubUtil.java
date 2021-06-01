@@ -24,13 +24,13 @@ public class GithubUtil {
     }
 
     public static String author(String link) {
-        Matcher match = pat_displayName.matcher(link);
+        Matcher match = pat_authorName.matcher(link);
         if (match.find()) return CUD.sentenceConversion(match.group(1));
         return link;
     }
 
     public static String authorAndRepo(String link) {
-        Matcher match = pat_authorName.matcher(link);
+        Matcher match = pat_authorAndRepo.matcher(link);
         if (match.find()) return match.group(1);
         return link;
     }

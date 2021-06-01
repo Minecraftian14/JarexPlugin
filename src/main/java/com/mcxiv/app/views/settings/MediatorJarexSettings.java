@@ -1,14 +1,12 @@
 package com.mcxiv.app.views.settings;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.ui.RowElement;
+import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.util.EqualityCompatible;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
 import games.rednblack.h2d.common.MsgAPI;
-import games.rednblack.h2d.common.plugins.H2DPluginAdapter;
 import org.puremvc.java.interfaces.INotification;
 import org.puremvc.java.patterns.mediator.Mediator;
 
@@ -40,24 +38,23 @@ public class MediatorJarexSettings extends Mediator<ViewJarexSettings> {
                 // Setting the settings in viewComponent
                 viewComponent.setSettings(settingsData);
 
-                facade.sendNotification(MsgAPI.ADD_PLUGIN_SETTINGS, viewComponent);
+                CUD.event(MsgAPI.ADD_PLUGIN_SETTINGS, viewComponent);
                 break;
 
-            case ADD_NEW_ROW_ELEMENT:
-                Object object = notification.getBody();
-                if (object instanceof LinkData)
-                    viewComponent.getSettings().registeredLinks.add((LinkData) object);
-                else {
-                    RowElement element = (RowElement) object;
-                    viewComponent.getSettings().registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysUpdateCheck()));
-                }
+            case ADD_NEW_ELEMENT:
+                LinkData data = notification.getBody();
+                viewComponent.getSettings().registeredLinks.add(data);
                 viewComponent.translateSettingsToView();
                 break;
 
-            case REMOVE_ROW_ELEMENT:
-                EqualityCompatible elementObj = notification.getBody();
+            case REMOVE_ELEMENT:
+                LinkData elementObj = notification.getBody();
                 viewComponent.getSettings().registeredLinks.removeIf(elementObj::equivalent);
                 viewComponent.translateSettingsToView();
+                break;
+
+            case SAVE_SETTINGS:
+                viewComponent.translateViewToSettings();
                 break;
         }
 

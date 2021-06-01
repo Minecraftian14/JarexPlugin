@@ -9,6 +9,7 @@ import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.util.HttpDownloadUtility;
 import com.mcxiv.app.util.ThreadUtil;
 import com.mcxiv.app.valueobjects.DownloadData;
+import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
 import com.mcxiv.app.views.jarexhud.EventHUD;
 import com.mcxiv.app.views.settings.EventSettings;
@@ -48,7 +49,7 @@ public class MediatorDownloadDialog extends Mediator<ViewDownloadDialog> {
 
             case DOWNLOAD_APPLICATION_JAR_REQUEST:
                 ThreadUtil.launch(() -> downloadJarRequestProcessor(notification.getBody()));
-                JarexPlugin.plugin.facade.sendNotification(MsgAPI.SAVE_EDITOR_CONFIG); // TODO: Is it required?
+                CUD.event(MsgAPI.SAVE_EDITOR_CONFIG);
                 break;
 
             case OPEN_JAR_CHOOSER_MENU:
@@ -85,7 +86,7 @@ public class MediatorDownloadDialog extends Mediator<ViewDownloadDialog> {
             DialogMan.showOkDialog(
                     data.getPluginName() + " has not been downloaded even once!",
                     "Would you like to download the latest release? " + data.getReleaseData().tag_name,
-                    () -> facade.sendNotification(EventDownloader.DOWNLOAD_APPLICATION_JAR_REQUEST.getName(), data));
+                    () -> CUD.safeEvent(EventDownloader.DOWNLOAD_APPLICATION_JAR_REQUEST.getName(), data));
             return;
         }
         // else, a "version" is already downloaded.
@@ -102,13 +103,13 @@ public class MediatorDownloadDialog extends Mediator<ViewDownloadDialog> {
             DialogMan.showChoiceDialog(
                     "New update found!",
                     String.format("A new version for %s has been found!\nWould you like to download it now?\nCurrent: %s\nLatest: %s", data.getPluginName(), currentVersion, data.getReleaseData().tag_name),
-                    new ButtonMeta("Maybe Later...", () -> facade.sendNotification(EventHUD.OPEN_APPLICATION_ACTION_NO_CHECK.getName(), link)),
-                    new ButtonMeta("Yeah Sure!!!", () -> facade.sendNotification(EventDownloader.DOWNLOAD_APPLICATION_JAR_REQUEST.getName(), data))
+                    new ButtonMeta("Maybe Later...", () -> CUD.safeEvent(EventHUD.OPEN_APPLICATION_ACTION_NO_CHECK.getName(), link)),
+                    new ButtonMeta("Yeah Sure!!!", () -> CUD.safeEvent(EventDownloader.DOWNLOAD_APPLICATION_JAR_REQUEST.getName(), data))
             );
 
         } else {
             viewComponent.progressComplete();
-            facade.sendNotification(EventHUD.OPEN_APPLICATION_ACTION_NO_CHECK.getName(), link);
+            CUD.safeEvent(EventHUD.OPEN_APPLICATION_ACTION_NO_CHECK.getName(), link);
         }
 
     }
@@ -142,7 +143,7 @@ public class MediatorDownloadDialog extends Mediator<ViewDownloadDialog> {
         DialogMan.showChoiceDialog("Application file not found!",
                 "Jarex was not able to identify the jar file to download\n" +
                         "Would you like to try choosing the file yourself?",
-                new ButtonMeta("Let's See...", () -> facade.sendNotification(EventDownloader.OPEN_JAR_CHOOSER_MENU.getName(), data)),
+                new ButtonMeta("Let's See...", () -> CUD.safeEvent(EventDownloader.OPEN_JAR_CHOOSER_MENU.getName(), data)),
                 new ButtonMeta("Nah, Leave It..", IDENTITY.doNothing)
         );
     }
@@ -164,10 +165,12 @@ public class MediatorDownloadDialog extends Mediator<ViewDownloadDialog> {
 
         HttpDownloadUtility.downloadFile(assetData.browser_download_url, data.getJarPath(), viewComponent);
 
-        facade.sendNotification(EventSettings.REMOVE_ROW_ELEMENT.getName(), data.getLink());
+        CUD.safeEvent(EventSettings.REMOVE_ELEMENT.getName(), data.getLink());
         LinkData link = new LinkData(data.getLink().getLink(), data.getReleaseData().tag_name, data.getLink().isAlwaysUpdateCheck());
-        facade.sendNotification(EventSettings.ADD_NEW_ROW_ELEMENT.getName(), link);
+        CUD.safeEvent(EventSettings.ADD_NEW_ELEMENT.getName(), link);
 
-        facade.sendNotification(EventHUD.OPEN_APPLICATION_ACTION_NO_CHECK.getName(), data.getLink());
+        CUD.safeEvent(EventSettings.SAVE_SETTINGS.getName());
+        CUD.safeEvent(EventHUD.OPEN_APPLICATION_ACTION_NO_CHECK.getName(), data.getLink());
+
     }
 }

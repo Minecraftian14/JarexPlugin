@@ -3,6 +3,7 @@ package com.mcxiv.app.views.settings;
 import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.PluginTester;
 import com.mcxiv.app.ui.RowElement;
+import com.mcxiv.app.ui.RowElementEntry;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
 import games.rednblack.h2d.common.vo.EditorConfigVO;
@@ -19,6 +20,7 @@ class MediatorJarexSettingsTest {
                 registeredLinks.add(new LinkData("https://api.github.com/repos/raeleus/skin-composer/releases/latest", true));
             }}.toStorage(this.pluginStorage.computeIfAbsent(JarexPlugin.CLASS_NAME, k -> new HashMap<>()));
         }});
+
         PluginTester.launchTest(null, MediatorJarexSettingsTest::Test);
     }
 
@@ -42,8 +44,9 @@ class MediatorJarexSettingsTest {
                         .getChildren().items
         )
                 .filter(actor -> actor instanceof RowElement)
+                .filter(actor -> !(actor instanceof RowElementEntry))
                 .map(actor -> (RowElement) actor)
-                .forEach(element -> System.out.println(element.getLink()));
+                .forEach(element -> System.out.println("MediatorJarexSettingsTest> " + element.getLink()));
     }
 
 }

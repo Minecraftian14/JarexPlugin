@@ -7,6 +7,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mcxiv.app.JarexPlugin;
+import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
@@ -48,7 +49,7 @@ public class ViewJarexHUD extends VisTable {
             button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    JarexPlugin.plugin.facade.sendNotification(EventHUD.OPEN_APPLICATION_ACTION.getName(), element);
+                    CUD.event(EventHUD.OPEN_APPLICATION_ACTION.getName(), element);
                     if (parent != null)
                         parent.close();
                 }

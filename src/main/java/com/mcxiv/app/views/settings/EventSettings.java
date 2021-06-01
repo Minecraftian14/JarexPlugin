@@ -7,13 +7,14 @@ public enum EventSettings {
     NULL,
     ADD_SETTINGS_MENU_ACTION,
     /**
-     * Object sent along is of type RowElement
+     * Object sent along is of type LinkData
      */
-    ADD_NEW_ROW_ELEMENT,
+    ADD_NEW_ELEMENT,
     /**
-     * Object sent along is of type RowElement
+     * Object sent along is of type LinkData
      */
-    REMOVE_ROW_ELEMENT;
+    REMOVE_ELEMENT,
+    SAVE_SETTINGS;
 
     private final String name;
 

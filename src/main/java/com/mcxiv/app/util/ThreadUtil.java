@@ -13,11 +13,7 @@ public class ThreadUtil {
     }
 
     public static void launchForOnly(Runnable runnable, int seconds) {
-        try {
-            CompletableFuture.runAsync(runnable).get(seconds, TimeUnit.SECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            e.printStackTrace();
-        }
+        CUD.Try(() -> CompletableFuture.runAsync(runnable).get(seconds, TimeUnit.SECONDS));
     }
 
     public static void readStream(InputStream stream) {
@@ -25,4 +21,14 @@ public class ThreadUtil {
         while (scanner.hasNext()) System.out.println(scanner.nextLine());
     }
 
+    public static void launchAfter(Runnable runnable, int seconds) {
+        launch(() -> {
+            try {
+                Thread.sleep(seconds * 1000);
+                runnable.run();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 }

@@ -1,5 +1,6 @@
 package com.mcxiv.app.views.settings;
 
+import com.badlogic.gdx.Gdx;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mcxiv.app.JarexPlugin;
@@ -67,19 +68,8 @@ public class ViewJarexSettings extends SettingsNodeValue<JarexSettingsData> {
 
     @Override
     public void translateViewToSettings() {
-        JarexSettingsData newSettings = new JarexSettingsData();
-
-        getContentTable().getChildren().forEach(actor -> {
-            if (actor instanceof RowElement && !actor.equals(entryElement)) {
-                RowElement element = (RowElement) actor;
-                newSettings.registeredLinks.add(new LinkData(element.getLink(), element.isAlwaysUpdateCheck()));
-            }
-        });
-
-        setSettings(newSettings);
-
-        newSettings.toStorage(JarexPlugin.plugin.getStorage());
-        facade.sendNotification(MsgAPI.SAVE_EDITOR_CONFIG);
+        getSettings().toStorage(JarexPlugin.plugin.getStorage());
+        CUD.event(MsgAPI.SAVE_EDITOR_CONFIG);
     }
 
     /**

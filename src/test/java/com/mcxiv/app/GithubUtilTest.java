@@ -13,5 +13,9 @@ class GithubUtilTest {
         assertEquals("Novix", GithubUtil.displayName("https://api.github.com/repos/Minecraftian14/Novix/releases/latest"));
         assertEquals("Skin Composer.jar", GithubUtil.applicationJarName("https://api.github.com/repos/raeleus/skin-composer/releases/latest"));
         assertEquals("Novix.jar", GithubUtil.applicationJarName("https://api.github.com/repos/Minecraftian14/Novix/releases/latest"));
+
+        assertEquals("https://api.github.com/repos/a/b/releases/latest", GithubUtil.link("a b"));
     }
+
+
 }

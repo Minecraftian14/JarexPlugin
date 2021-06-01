@@ -4,6 +4,7 @@ import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.PluginTester;
 import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.util.GithubUtil;
+import com.mcxiv.app.util.ThreadUtil;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
 import games.rednblack.h2d.common.vo.EditorConfigVO;
@@ -36,10 +37,11 @@ class MediatorDownloadDialogTest {
         PluginTester.setTable(mediator.getViewComponent());
 
 //        Test_InvalidLinkData();
-        Test_ValidLinkDataNotDownloadedEvenOnce();
+//        Test_ValidLinkDataNotDownloadedEvenOnce();
 //        Test_ValidLinkOldVersionInstalled();
 //        Test_NoSuitableJarFile();
 //        Test_NoJarFileFound();
+        Test_DoVersionsActuallyGetUpdated();
     }
 
     private static void Test_InvalidLinkData() {
@@ -93,6 +95,25 @@ class MediatorDownloadDialogTest {
         JarexPlugin.plugin.facade
                 .sendNotification(EventDownloader.CHECK_FOR_UPDATES_ACTION.getName(),
                         new LinkData(GithubUtil.link("grpc/grpc"), true));
+    }
+
+    private static void Test_DoVersionsActuallyGetUpdated() {
+
+        assert new JarexSettingsData() {{
+            fromStorage(JarexPlugin.plugin.getStorage());
+        }}.registeredLinks.stream().anyMatch(linkData -> new LinkData(GithubUtil.link("Minecraftian14/Novix"), true).equivalent(linkData));
+        System.out.println("Yes MCXIV/Novix exists");
+
+        JarexPlugin.plugin.facade
+                .sendNotification(EventDownloader.CHECK_FOR_UPDATES_ACTION.getName(),
+                        new LinkData(GithubUtil.link("Minecraftian14/Novix"), "0.0.1", true));
+
+        ThreadUtil.launchAfter(() -> {
+            System.out.println("version: " + new JarexSettingsData() {{
+                fromStorage(JarexPlugin.plugin.getStorage());
+            }}.registeredLinks.stream().filter(linkData -> new LinkData(GithubUtil.link("Minecraftian14/Novix"), true).equivalent(linkData)).findFirst().get().getVersion());
+        }, 10);
+
     }
 
 }

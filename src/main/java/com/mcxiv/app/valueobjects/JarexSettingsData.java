@@ -1,6 +1,8 @@
 package com.mcxiv.app.valueobjects;
 
 import com.badlogic.gdx.utils.Array;
+import com.mcxiv.app.ui.IDENTITY;
+import com.mcxiv.app.util.CUD;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -25,7 +27,7 @@ public class JarexSettingsData {
         }
 
         for (String s : links.split(DELIMITER))
-            registeredLinks.add(LinkData.deRow(s));
+            CUD.Try(() -> registeredLinks.add(LinkData.deRow(s))).Default(IDENTITY.doNothingS);
     }
 
     public void toStorage(Map<String, Object> settings) {

@@ -1,7 +1,10 @@
 package com.mcxiv.app.util;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.decals.PluggableGroupStrategy;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.mcxiv.app.JarexPlugin;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -99,6 +102,24 @@ public class CUD {
             }
         };
     }
+
+    public static void event(String name, Object body) {
+        JarexPlugin.plugin.facade.sendNotification(name, body);
+    }
+
+    public static void event(String name) {
+        JarexPlugin.plugin.facade.sendNotification(name);
+    }
+
+    public static void safeEvent(String name, Object body) {
+        Gdx.app.postRunnable(() -> JarexPlugin.plugin.facade.sendNotification(name, body));
+    }
+
+    public static void safeEvent(String name) {
+        Gdx.app.postRunnable(() -> JarexPlugin.plugin.facade.sendNotification(name));
+    }
+
+    // Try Catchers
 
     public static void Try(HazardousRunnable thrower) {
         LazyTry(thrower).Catch(Throwable::printStackTrace);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.*;
 import com.mcxiv.app.JarexPlugin;
+import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.util.EqualityCompatible;
 import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.valueobjects.LinkData;
@@ -59,12 +60,12 @@ public class RowElement extends VisTable implements EqualityCompatible {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RowElement element = (RowElement) o;
-        return Objects.equals(getLink(), element.getLink()) && Objects.equals(isAlwaysUpdateCheck(), element.isAlwaysUpdateCheck());
+        return Objects.equals(getLink(), element.getLink());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLink(), isAlwaysUpdateCheck());
+        return Objects.hash(getLink());
     }
 
     @Override
@@ -87,7 +88,7 @@ public class RowElement extends VisTable implements EqualityCompatible {
 
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-            JarexPlugin.plugin.facade.sendNotification(EventSettings.REMOVE_ROW_ELEMENT.getName(), element);
+            CUD.event(EventSettings.REMOVE_ELEMENT.getName(), new LinkData(element.getLink(), element.isAlwaysUpdateCheck()));
         }
     }
 

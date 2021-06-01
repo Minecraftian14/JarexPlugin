@@ -2,6 +2,7 @@ package com.mcxiv.app.views.jarexhud;
 
 import com.mcxiv.app.JarexPlugin;
 import com.mcxiv.app.PluginTester;
+import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.valueobjects.JarexSettingsData;
 import com.mcxiv.app.valueobjects.LinkData;
 import games.rednblack.h2d.common.vo.EditorConfigVO;
@@ -31,7 +32,7 @@ class MediatorJarexHUDTest {
 
         MediatorJarexHUD mediator = plugin.facade.retrieveMediator(MediatorJarexHUD.CLASS_NAME);
 
-        plugin.facade.sendNotification(EventHUD.OPEN_JAREX_HUD_ACTION.getName());
+        CUD.event(EventHUD.OPEN_JAREX_HUD_ACTION.getName());
 
 //            plugin.facade.sendNotification(EventHUD.OPEN_APPLICATION_ACTION_NO_CHECK.getName(),
 //                    new LinkData("https://api.github.com/repos/Minecraftian14/Novix/releases/latest", true));

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.mcxiv.app.JarexPlugin;
+import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.valueobjects.LinkData;
 import com.mcxiv.app.views.settings.EventSettings;
 
@@ -24,11 +25,10 @@ public class RowElementEntry extends RowElement {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
-                RowElement element = new RowElement(new LinkData(getLink(), isAlwaysUpdateCheck()));
+                CUD.event(EventSettings.ADD_NEW_ELEMENT.getName(), new LinkData(getLink(), isAlwaysUpdateCheck()));
+
                 fie_gitLink.setText("Enter New URL");
                 cbx_autoUpdate.setChecked(true);
-                JarexPlugin.plugin.facade
-                        .sendNotification(EventSettings.ADD_NEW_ROW_ELEMENT.getName(), element);
 
             }
         });

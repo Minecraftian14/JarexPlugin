@@ -1,6 +1,7 @@
 package com.mcxiv.app.views.jarexhud;
 
 import com.mcxiv.app.JarexPlugin;
+import com.mcxiv.app.util.CUD;
 import com.mcxiv.app.util.GithubUtil;
 import com.mcxiv.app.util.ThreadUtil;
 import com.mcxiv.app.valueobjects.LinkData;
@@ -54,7 +55,7 @@ public class MediatorJarexHUD extends Mediator<ViewJarexHUD> {
 
     private void openApplicationAction(LinkData data, boolean ignoreUpdates) {
         if (!ignoreUpdates && data.isAlwaysUpdateCheck()) {
-            facade.sendNotification(EventDownloader.CHECK_FOR_UPDATES_ACTION.getName(), data);
+            CUD.event(EventDownloader.CHECK_FOR_UPDATES_ACTION.getName(), data);
             return;
         }
         ThreadUtil.launch(() -> launchApplication(data));

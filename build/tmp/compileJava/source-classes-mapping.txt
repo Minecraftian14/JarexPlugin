@@ -25,8 +25,8 @@ com/mcxiv/app/util/GithubUtil.java
 com/mcxiv/app/ui/DialogMan.java
  com.mcxiv.app.ui.DialogMan
  com.mcxiv.app.ui.DialogMan$ButtonMeta
-com/mcxiv/app/JarexPlugin.java
- com.mcxiv.app.JarexPlugin
+com/mcxiv/app/util/HttpDownloadUtility.java
+ com.mcxiv.app.util.HttpDownloadUtility
 com/mcxiv/app/views/settings/EventSettings.java
  com.mcxiv.app.views.settings.EventSettings
 com/mcxiv/app/views/downloader/ViewDownloadDialog.java
@@ -35,9 +35,8 @@ com/mcxiv/app/views/settings/ViewJarexSettings.java
  com.mcxiv.app.views.settings.ViewJarexSettings
 com/mcxiv/app/util/EqualityCompatible.java
  com.mcxiv.app.util.EqualityCompatible
-com/mcxiv/app/views/downloader/MediatorDownloadDialog.java
- com.mcxiv.app.views.downloader.MediatorDownloadDialog
- com.mcxiv.app.views.downloader.MediatorDownloadDialog$1
+com/mcxiv/app/views/downloader/EventDownloader.java
+ com.mcxiv.app.views.downloader.EventDownloader
 com/mcxiv/app/ui/RowElement.java
  com.mcxiv.app.ui.RowElement
  com.mcxiv.app.ui.RowElement$ButtonRemoveAction
@@ -52,7 +51,8 @@ com/mcxiv/app/ui/IDENTITY.java
 com/mcxiv/app/views/settings/MediatorJarexSettings.java
  com.mcxiv.app.views.settings.MediatorJarexSettings
  com.mcxiv.app.views.settings.MediatorJarexSettings$1
-com/mcxiv/app/util/HttpDownloadUtility.java
- com.mcxiv.app.util.HttpDownloadUtility
-com/mcxiv/app/views/downloader/EventDownloader.java
- com.mcxiv.app.views.downloader.EventDownloader
+com/mcxiv/app/views/downloader/MediatorDownloadDialog.java
+ com.mcxiv.app.views.downloader.MediatorDownloadDialog
+ com.mcxiv.app.views.downloader.MediatorDownloadDialog$1
+com/mcxiv/app/JarexPlugin.java
+ com.mcxiv.app.JarexPlugin
